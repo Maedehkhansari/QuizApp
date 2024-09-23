@@ -19,7 +19,7 @@ function showQuestion() {
     updateProgressBar();
 }
 
-function gameIsOver(){
+function gameIsOver() {
     return currentQuestion >= questions.length
 }
 
@@ -32,7 +32,7 @@ function showEndScreen() {
     document.getElementById('header-image').src = 'img/win.png';
 }
 
-function updateProgressBar(){
+function updateProgressBar() {
     let percent = currentQuestion / questions.length;
     percent = Math.round(percent * 100);
 
@@ -65,17 +65,21 @@ function answer(selection) {
         AUDIO_FAIL.play();
     }
     document.getElementById('next-button').disabled = false;
+
+    disableAnswerButtons();
 }
 
-function rightAnswerSelected(question, selectedQuestionNumber){
-   return selectedQuestionNumber == question['right_answer'];
+function rightAnswerSelected(question, selectedQuestionNumber) {
+    return selectedQuestionNumber == question['right_answer'];
 }
 
 function nextQuestion() {
     currentQuestion++;
     document.getElementById('next-button').disabled = true;
     resetAnswerButtons();
+    enableAnswerButtons();
     showQuestion();
+
 }
 
 function resetAnswerButtons() {
@@ -92,9 +96,20 @@ function restartGame() {
     rightQuestions = 0;
     currentQuestion = 0;
     init();
-
 }
 
+function disableAnswerButtons() {
+    for (let i = 1; i < 5; i++) {
+        document.getElementById('answer_' + i).parentNode.removeAttribute("onclick");
+        document.getElementById('answer_' + i).parentNode.classList.remove('cursor-pointer');
+    }
+}
 
+function enableAnswerButtons() {
+    for (let i = 1; i < 5; i++) {
+        document.getElementById('answer_' + i).parentNode.setAttribute("onclick", `answer('answer_${i}')`);
+        document.getElementById('answer_' + i).parentNode.classList.add('cursor-pointer');
+    }
+}
 
 
